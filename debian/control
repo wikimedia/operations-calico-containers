@@ -1,0 +1,24 @@
+Package: calictl
+Architecture: amd64
+Depends: golang-go (>= 1.5.0)
+Description: Calicoctl command-line tool
+ Calico provides a highly scalable networking
+ solution for connecting data center workloads (containers, VMs, or
+ bare metal).  It is based on the same scalable IP networking principles
+ as the internet: providing connectivity using a pure Layer 3 approach.
+ Calico can be deployed without encapsulation or overlays to provide high
+ performance at massive scales.
+ .
+ Read more about it on the Project Calico website
+ (https://www.projectcalico.org).
+ .
+ When using Calico networking in containerized environments, each container
+ gets its own IP and fine grain security policy.  A calico-node service
+ runs on each node which handles all of the necessary IP routing,
+ installation of policy rules, and distribution of routes across the
+ cluster of nodes.
+ .
+ The command line tool, calicoctl, makes it easy to configure
+ and start the Calico service, and allows you to interact
+ with the datastore (etcd) to define and apply rich security policy
+ to the containers you create.

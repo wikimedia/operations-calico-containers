@@ -1,0 +1,5 @@
+calico-containers (1.0.0-betarc5-1~wmf1) jessie-wikimedia; urgency=medium
+
+  * Initial release
+
+ -- Giuseppe Lavagetto <glavagetto@wikimedia.org>  Mon, 14 Nov 2016 13:34:11 +0100

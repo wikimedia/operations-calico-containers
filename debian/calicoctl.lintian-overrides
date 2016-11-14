@@ -1,0 +1,6 @@
+# Go madness, I know
+calicoctl: statically-linked-binary usr/bin/confd
+# This is a shitty binary-only package
+calicoctl: new-package-should-close-itp-bug
+# We're hipsters, who needs a man page?
+calicoctl: binary-without-manpage usr/bin/calicoctl
