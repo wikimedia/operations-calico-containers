@@ -1,0 +1,32 @@
+# Copyright (c) 2016 Wikimedia Foundation. All rights reserved.
+# Original dockerfile (c) 2016 Tigera Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+FROM docker-registry.wikimedia.org/wikimedia-jessie
+MAINTAINER Giuseppe Lavagetto <joe@wikimedia.org>
+
+# Set the minimum Docker API version required for libnetwork.
+ENV DOCKER_API_VERSION 1.21
+
+RUN apt-get update && \
+    apt-get install -y ca-certificates runit && \
+    apt-get install -y conntrack iptables ipset iproute2 "iputils-*" nfct
+
+# Copy "shared directory" which can be used to pass custom files (local git repos,
+# that can be used by pip install git+file:///)
+COPY node_share /tmp/node_share
+
+# Copy in the filesystem - this contains felix, bird, gobgp etc...
+COPY filesystem /
+
+CMD ["start_runit"]

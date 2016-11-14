@@ -1,4 +1,4 @@
-.PHONY: all binary calico/node test ut ut-circle st st-ssl clean run-etcd run-etcd-ssl help clean_calico_node
+.PHONY: all binary calico/node calico/node.debian test ut ut-circle st st-ssl clean run-etcd run-etcd-ssl help clean_calico_node
 default: help
 all: test                                 ## Run all the tests
 test: st test-containerized               ## Run all the tests
@@ -34,6 +34,7 @@ NODE_CONTAINER_NAME?=calico/node:$(CALICOCONTAINERS_VERSION)
 NODE_CONTAINER_FILES=$(shell find $(NODE_CONTAINER_DIR)/filesystem -type f)
 # we can pass --build-arg during node image building
 NODE_CONTAINER_BUILD_ARGS?=
+NODE_DOCKERFILE?=Dockerfile.debian
 NODE_CONTAINER_CREATED=$(NODE_CONTAINER_DIR)/.calico_node.created
 NODE_CONTAINER_BIN_DIR=$(NODE_CONTAINER_DIR)/filesystem/bin
 NODE_CONTAINER_BINARIES=startup allocate-ipip-addr calico-felix bird calico-bgp-daemon confd libnetwork-plugin
@@ -45,14 +46,17 @@ calico/node: $(NODE_CONTAINER_CREATED)    ## Create the calico/node image
 calico-node.tar: $(NODE_CONTAINER_CREATED)
 	docker save --output $@ $(NODE_CONTAINER_NAME)
 
+calico/node.debian: NODE_DOCKERFILE=Dockerfile.debian
+calico/node.debian: $(NODE_CONTAINER_CREATED)
+
 # Build ACI (the APPC image file format) of calico/node.
 # Requires docker2aci installed on host: https://github.com/appc/docker2aci
 calico-node-latest.aci: calico-node.tar
 	docker2aci $<
 
 # Build calico/node docker image - explicitly depend on the container binaries.
-$(NODE_CONTAINER_CREATED): $(NODE_CONTAINER_DIR)/Dockerfile $(NODE_CONTAINER_FILES) $(addprefix $(NODE_CONTAINER_BIN_DIR)/,$(NODE_CONTAINER_BINARIES))
-	docker build $(NODE_CONTAINER_BUILD_ARGS) -t $(NODE_CONTAINER_NAME) $(NODE_CONTAINER_DIR)
+$(NODE_CONTAINER_CREATED): $(NODE_CONTAINER_DIR)/$(NODE_DOCKERFILE) $(NODE_CONTAINER_FILES) $(addprefix $(NODE_CONTAINER_BIN_DIR)/,$(NODE_CONTAINER_BINARIES))
+	docker build $(NODE_CONTAINER_BUILD_ARGS) -t $(NODE_CONTAINER_NAME) -f $(NODE_CONTAINER_DIR)/$(NODE_DOCKERFILE) $(NODE_CONTAINER_DIR)
 	touch $@
 
 # Build binary from python files, e.g. startup.py or allocate-ipip-addr.py
