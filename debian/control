@@ -1,4 +1,6 @@
-Package: calictl
+Package: calicoctl
+Version: 1.0.0-betarc5-1~wmf1
+Maintainer: Giuseppe Lavagetto <joe@wikimedia.org>
 Architecture: amd64
 Depends: golang-go (>= 1.5.0)
 Description: Calicoctl command-line tool
