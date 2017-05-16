@@ -1,0 +1,14 @@
+general:
+  artifacts:
+    - "dist"
+machine:
+  services:
+    - docker
+test:
+  override:
+    - make test-containerized
+experimental:
+  notify:
+    branches:
+      only:
+        - master
