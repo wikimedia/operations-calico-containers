@@ -1,0 +1,42 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#export DH_VERBOSE=1
+
+include /usr/share/dpkg/pkg-info.mk
+
+# OS / ARCH.
+OS := Linux
+ARCH := amd64
+
+DH_GOPKG := github.com/projectcalico/calicoctl
+export GOPATH=$(CURDIR)/build
+export BUILD_DIR=$(GOPATH)/src/github.com/projectcalico/calicoctl
+
+%:
+	dh $@ --buildsystem=golang
+
+override_dh_auto_configure:
+	mkdir -p $(BUILD_DIR)
+	tar -cf - --exclude=debian/build --exclude=.pc . \
+		| tar -xf - -C $(BUILD_DIR)
+	cd $(BUILD_DIR) && glide install -strip-vendor
+
+override_dh_auto_build:
+	PACKAGE_NAME?=github.com/projectcalico/calicoctl
+cd $(BUILD_DIR) && GOOS=$(OS) GOARCH=$(ARCH) CGO_ENABLED=0 go build -v -i -o dist/calicoctl -ldflags "-X $(PACKAGE_NAME)/calicoctl/commands.VERSION=$(DEB_VERSION_UPSTREAM) -s -w" "./calicoctl/calicoctl.go"
+
+
+override_dh_auto_test:
+	echo "Skipping tests"
+
+override_dh_auto_install:
+	mkdir -p debian/calicoctl/usr/bin
+	install -m=0755 $(BUILD_DIR)/dist/calicoctl debian/calicoctl/usr/bin
+
+override_dh_auto_clean:
+	rm -rf $(BUILD_DIR)
+	dh_auto_clean
+
+
+.PHONY: override_dh_auto_configure override_dh_auto_build override_dh_auto_clean override_dh_auto_test override_dh_auto_install

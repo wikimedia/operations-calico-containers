@@ -1,0 +1,15 @@
+Source: calicoctl
+Section: net
+Priority: optional
+Maintainer: Giuseppe Lavagetto <glavagetto@wikimedia.org>
+Build-Depends: debhelper (>= 9), golang-go (>=1.5)
+Standards-Version: 3.9.8
+Homepage: https://github.com/projectcalico/calicoctl
+
+Package: calicoctl
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Calico network CLI tool
+ The command line tool, calicoctl, makes it easy to manage Calico
+ network and security policy.
+

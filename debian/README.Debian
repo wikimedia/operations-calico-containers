@@ -1,0 +1,7 @@
+calicoctl for Debian
+--------------------
+
+This package cannot be compiled without an internet connection, it
+doesn't pretend being a correct debian package, only doing its job
+
+ -- Joe <joe@gizmo.local>, Tue, 16 May 2017 17:18:07 +0200

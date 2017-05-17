@@ -1,0 +1,5 @@
+calico-containers (1.2.0-1~wmf1) UNRELEASED; urgency=medium
+
+  * Initial release.
+
+ -- Giuseppe Lavagetto <glavagetto@wikimedia.org>  Tue, 16 May 2017 15:55:38 +0200

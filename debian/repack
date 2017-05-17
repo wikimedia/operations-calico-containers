@@ -1,0 +1,25 @@
+#!/bin/bash
+# Script to reimport the tar archive from projectcalico/cni-plugin releases AND
+# Include the other cni plugins too, in binary format.
+set -eu
+VERSION=${1}
+
+tmp_dir="$(mktemp -d -t tmp.XXXXXXX)"
+full_version="calicoctl-${VERSION}"
+out=$(realpath "${PWD}/..")
+orig_tar="${out}/calicoctl-${VERSION}.tar.xz"
+
+function cleanup() {
+    rc=$?
+    rm -rf "${tmp_dir}"
+    echo "Removed working directory '${tmp_dir}'"
+
+    exit $rc
+}
+trap cleanup ERR EXIT SIGTERM SIGHUP SIGINT SIGQUIT
+
+echo "Downloading ${full_version}"
+(cd "${tmp_dir}" && \
+     curl -L "https://github.com/projectcalico/calicoctl/archive/v${VERSION}.tar.gz" | tar -zxf - )
+(cd "${tmp_dir}" && tar Jcf "${orig_tar}" "${full_version}")
+echo "Repackaged in ${orig_tar}"

@@ -1,0 +1,33 @@
+diff --git a/calico_node/Dockerfile b/calico_node/Dockerfile
+index 5a9e7fc4..ffc71208 100644
+--- a/calico_node/Dockerfile
++++ b/calico_node/Dockerfile
+@@ -11,7 +11,7 @@
+ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+-FROM alpine:3.4
++FROM docker-registry.wikimedia.org/alpine:3.4
+ MAINTAINER Tom Denham <tom@projectcalico.org>
+ 
+ # Set the minimum Docker API version required for libnetwork.
+diff --git a/calicoctl/Dockerfile.calicoctl b/calicoctl/Dockerfile.calicoctl
+index 851f2c40..9517874c 100644
+--- a/calicoctl/Dockerfile.calicoctl
++++ b/calicoctl/Dockerfile.calicoctl
+@@ -1,4 +1,4 @@
+-FROM alpine:3.4
++FROM docker-registry.wikimedia.org/alpine:3.4
+ MAINTAINER Tom Denham <tom@projectcalico.org>
+ 
+ ADD dist/calicoctl ./calicoctl
+diff --git a/workload/Dockerfile b/workload/Dockerfile
+index 4145451a..d681da43 100644
+--- a/workload/Dockerfile
++++ b/workload/Dockerfile
+@@ -1,4 +1,4 @@
+-FROM alpine:3.4
++FROM docker-registry.wikimedia.org/alpine:3.4
+ RUN apk add --no-cache \
+     python \
+     netcat-openbsd
