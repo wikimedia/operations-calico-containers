@@ -1,4 +1,4 @@
-calico-containers (1.2.0-1~wmf1) UNRELEASED; urgency=medium
+calicoctl (1.2.0-1~wmf1) jessie-wikimedia; urgency=medium
 
   * Initial release.
 
